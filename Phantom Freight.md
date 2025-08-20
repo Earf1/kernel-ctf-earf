@@ -1,16 +1,12 @@
-Title
-Phantom Freight
+# Phantom Freight
 
-Author
-Earf
+## Earf
 
-Domain
-Forensics
+## Forensics
 
-Difficulty
-Medium
+## Medium
 
-Question Description
+### Question Description
 A damaged ZIP is provided that refuses to extract. On hex inspection, the PK headers appear corrupted by an extra byte each. Fix the archive, extract its contents, and continue digging through the nested artifact(s) to recover the final flag.
 
 Provided:
@@ -25,7 +21,7 @@ Hints:
 
 Expected flow: repair the ZIP headers, extract to obtain an inner zip and a media file (JPEG), then find the password to unlock the inner zip.
 
-Intended Solution
+### Intended Solution
 Inspect and identify ZIP header corruption
 
 Open the file in a hex viewer or run hexdump -C broken.zip.
