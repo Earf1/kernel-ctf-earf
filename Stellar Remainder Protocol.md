@@ -1,12 +1,10 @@
 # Stellar Remainder Protocol
 
-## Author
-Earf
-## Domain
-Cryptography  
+##Earf
 
-## Difficulty
-Hard
+##Cryptography  
+
+##Hard
 
 ### Question Description
 
