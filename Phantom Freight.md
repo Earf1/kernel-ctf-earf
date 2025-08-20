@@ -13,14 +13,6 @@ Provided:
 
 File: broken.zip
 
-Hints:
-
-“Mind the application markers.”
-
-“Shop talk.”
-
-Expected flow: repair the ZIP headers, extract to obtain an inner zip and a media file (JPEG), then find the password to unlock the inner zip.
-
 ### Intended Solution
 Inspect and identify ZIP header corruption
 
@@ -28,15 +20,20 @@ Open the file in a hex viewer or run hexdump -C broken.zip.
 
 Valid ZIP local file headers start with 50 4B 03 04 and central directory entries with 50 4B 01 02; here each PK marker appears shifted with an extra byte inserted before 50 4B.
 
-Strategy: remove the extra byte consistently before every PK signature occurrence.
+Each header has exactly one injected byte immediately after “PK”, and the sequence of those injected bytes across the file is crafted to read “{m4Rk” when concatenated in order. For example, as the headers appear:
+
+PK{ (0x50 0x4B 0x7B …) → ‘{’
+
+PKm (0x50 0x4B 0x6D …) → ‘m’
+
+PK4 (0x50 0x4B 0x34 …) → ‘4’
+
+PKR (0x50 0x4B 0x52 …) → ‘R’
+
+PKk (0x50 0x4B 0x6B …) → ‘k’
+Remove the extra byte consistently before every PK signature occurrence.
 
 Repair PK headers
-
-Automate removal with a small script:
-
-Scan for occurrences of 0xXX 50 4B where 0xXX is the injected byte.
-
-Drop the injected 0xXX so the stream reads 50 4B … at each header boundary.
 
 Save the corrected file as fixed.zip.
 
@@ -50,15 +47,13 @@ Contents expected:
 
 inner.zip (password-protected)
 
-cover.jpg (or an audio/radio capture depending on variant)
+cover.jpg
 
-A quick strings/exiftool on cover.jpg reveals a plausible decoy password in visible metadata (e.g., IPTC Caption-Abstract: password=Spring2025!).
+A quick strings/exiftool on cover.jpg reveals a plausible decoy password in visible metadata (e.g., IPTC Caption-Abstract: password=thisthepasswordfr).
 
 Recognize the decoy and locate the real channel
 
 The decoy fails to open inner.zip.
-
-Hints “application markers” and “Shop talk” point to JPEG APP segments, specifically APP13 used by Photoshop (IRB: “8BIM”) rather than APP2.
 
 exiftool -v cover.jpg shows:
 
@@ -96,27 +91,10 @@ Open the inner zip and retrieve the flag
 
 unzip -P m4g1cALiMag3 inner.zip
 
-Extracted contents include flag.txt.
+Extracted contents include flag.png.
 
-View it to obtain the final flag.
-
-Validation and pitfalls
-
-Pitfall: relying on visible EXIF/IPTC/XMP decoys; these won’t open the inner zip.
-
-Validation: the recovered password should match an integrity clue (CRC32 embedded in the PASS payload). If CRC mismatches, you grabbed the wrong IRB/data.
-
-Tools that help:
-
-exiftool -v (to see APP13/Photoshop)
-
-hex editor/xxd (to locate “Photoshop 3.0”, “8BIM”, and parse)
-
-Optional parser script to decode the PASS structure reliably.
+View it to obtain the other part of the flag.
 
 Flag
-flag format is kernel ctf{.....}kernel
 
-kernel ctf{m4rk3rS_ov3r_m3tadatA}kernel
-
-If you share the other challenge prompts or filenames, I’ll generate matching writeups in the exact same structure.
+kernel ctf{m4Rk3rS_ov3r_m37ADat4}kernel
