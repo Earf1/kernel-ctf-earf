@@ -80,7 +80,7 @@ crc32(4B) of pwdata for integrity
 
 - Read pwlen, slice pwdata, verify CRC32 matches.
 
-- Reverse XOR with 0x5A to obtain the ASCII password, e.g., m4g1cALiMag3.
+- Reverse XOR with 0x5A (ascii Z) to obtain the password i.e m4g1cALiMag3.
 
 - Open the inner zip and retrieve the flag
 
