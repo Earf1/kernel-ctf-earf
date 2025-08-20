@@ -1,10 +1,10 @@
 # Stellar Remainder Protocol
 
-##Earf
+## Earf
 
-##Cryptography  
+## Cryptography  
 
-##Hard
+## Hard
 
 ### Question Description
 
