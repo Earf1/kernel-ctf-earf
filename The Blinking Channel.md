@@ -1,13 +1,10 @@
 # The Blinking Channel
 
-## Author
-Earf
+## Earf
 
-## Domain
-Forensics
+## Forensics
 
-## Difficulty
-Medium 
+## Medium 
 
 ### Question Description
 
